@@ -38,6 +38,12 @@ export const calculateAverageLifeQualityScores = async (iterations: number) => {
   let school_score = 0;
   let wiener_linien_score = 0;
 
+  let hospital: number [];
+  let police: number [];
+  let green: number[];
+  let school:number[];
+  let wiener: number[];
+
   for (let i = 0; i < iterations; i++) {
     
     const coords = generateRandomCoordinatesInVienna();
@@ -53,11 +59,17 @@ export const calculateAverageLifeQualityScores = async (iterations: number) => {
         continue;
     }
     else{
-    hospital_score=hospital_score+score[0]
-    police_score=police_score+score[1]
-    green_score=green_score+score[2]
-    school_score=school_score+score[3]
-    wiener_linien_score=wiener_linien_score+score[4]
+    hospital_score=hospital_score+score[0];
+    police_score=police_score+score[1];
+    green_score=green_score+score[2];
+    school_score=school_score+score[3];
+    wiener_linien_score=wiener_linien_score+score[4];
+
+    hospital[i]=score[0];
+    police[i]=score[1];
+    green[i]=score[2];
+    school[i]=score[3];
+    wiener[i]=score[4];
     console.log(i); 
 }
   }
@@ -66,12 +78,18 @@ export const calculateAverageLifeQualityScores = async (iterations: number) => {
   const average_green=green_score/iterations;
   const average_school=school_score/iterations;
   const average_wiener_linien=wiener_linien_score/iterations;
-  const averages: number[] = [average_hospital,average_police,average_green,average_school,average_wiener_linien]
+  const averages: number[] = [average_hospital,average_police,average_green,average_school,average_wiener_linien];
   console.log(averages);
-  return averages
+  const deviation_hospital=(Math.max(...hospital)-Math.min(...hospital));
+  const deviation_police=(Math.max(...police)-Math.min(...police));
+  const deviation_green=(Math.max(...green)-Math.min(...green));
+  const deviation_school=(Math.max(...school)-Math.min(...school));
+  const deviation_wiener=(Math.max(...wiener)-Math.min(...wiener));
+  const deviations: number []= [deviation_hospital, deviation_police, deviation_green, deviation_school, deviation_wiener];
+  console.log(deviations);
+  return averages;
 }
 
-// Assuming calculateLifeQualityScore is already defined as in your previous code
 export const calculateLifeQualityScore = async (coords: LocationData) => {
   const latitude = coords.lat;
   const longitude = coords.lng;

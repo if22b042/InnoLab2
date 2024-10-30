@@ -1,6 +1,7 @@
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 
+import { Platform } from 'react-native';
 interface Coordinates {
     longitude: number;
     latitude: number;
@@ -8,10 +9,11 @@ interface Coordinates {
 
 export async function   WienerLinienServiceCalc(lat: number, lon: number) {
     const RADIUS = 500; 
-    const filePath = "../src/assets/Wiener_Linien.csv";
   
     const fetchLines = async () => {
-        const lines = await getLinesFromCsv(filePath);
+        var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Wiener_Linien.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/Wiener_Linien.csv")); }
         return lines;
     };
 

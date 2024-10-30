@@ -28,8 +28,9 @@ export const calculateLifeQualityScore = async (coords, userCategory) =>
     const latitude=coords.lat
     const longitude=coords.lng
     const district=coords.districtNumber
-
+    console.log(district);
     var polices_score= await PoliceServiceCalc(latitude,longitude);
+   
     var hospital_score= await HospitalServiceCalc(latitude,longitude);
 
     var greenspace_score= await GreenSpaceServiceCalc(latitude,longitude);
@@ -55,8 +56,7 @@ export const calculateLifeQualityScore = async (coords, userCategory) =>
     var scores: number[] = [hospital_score, polices_score, greenspace_score, school_score, unemployment_score, income_score, wiener_linien_score, top_location_score];
     //average scores are either from the simulation which has been completed or directly from the .csv file
     console.log(scores);
-    var average_scores: number[] =[1.92, 2.06, 25.36, 4.37,89.91,24.992,23.26,1]
-    var normal_scores= normalizeScores(scores,average_scores)
+    var normal_scores= normalizeScores(scores)
     
     console.log(normal_scores);
 

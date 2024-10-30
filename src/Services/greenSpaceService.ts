@@ -1,6 +1,7 @@
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 
+import { Platform } from 'react-native';
 interface Coordinates {
   longitude: number;
   latitude: number;
@@ -11,7 +12,9 @@ export async function GreenSpaceServiceCalc(lat: number, lon: number): Promise<n
   const filePath = "../src/assets/GreenSpace.csv"; // Path to the greenspace CSV file
   
   const fetchLines = async () => {
-    const lines = await getLinesFromCsv(filePath);
+    var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/GreenSpace.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/GreenSpace.csv")); }
     return lines;
   };
 
@@ -20,7 +23,7 @@ export async function GreenSpaceServiceCalc(lat: number, lon: number): Promise<n
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
-    if (!line) continue;
+    if (!line || typeof line !== 'string') continue; 
 
     // Match coordinates within POLYGON or MULTIPOLYGON
     const match = line.match(/POLYGON\s*\(\(([^)]+)\)\)|MULTIPOLYGON\s*\(\(\(([^)]+)\)\)/);

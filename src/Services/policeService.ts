@@ -1,5 +1,6 @@
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 
+import { Platform } from 'react-native';
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 interface coordinates{
     longitude: number;
@@ -8,10 +9,12 @@ interface coordinates{
 
 export async function PoliceServiceCalc(lat:number, lon:number) {
     var RADIUS = 1000; 
-    const filePath="../src/assets/Police_Locations.csv"
   
     const fetchLines = async () => {
-        const lines = await getLinesFromCsv(filePath);
+        var lines;
+        if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Police_Locations.csv");}
+        else { lines = await getLinesFromCsv(require("../assets/Police_Locations.csv")); }
+       
         return lines;
     };
 

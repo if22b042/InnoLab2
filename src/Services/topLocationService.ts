@@ -1,6 +1,7 @@
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 
+import { Platform } from 'react-native';
 interface TopLocationRecord {
   title: string;
   category: string;
@@ -14,7 +15,9 @@ export async function TopLocationsServiceCalc(lat: number, lon: number): Promise
   const RADIUS = 1000; // Radius in meters for nearby search
   
   const fetchLines = async () => {
-    const lines = await getLinesFromCsv(filePath);
+    var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/top-locations-wien.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/top-locations-wien.csv")); }
     return lines;
   };
 
@@ -26,10 +29,8 @@ export async function TopLocationsServiceCalc(lat: number, lon: number): Promise
     const line = lines[i];
     if (!line) continue;
 
-    // Split the CSV line into columns by semicolon delimiter
     const columns = line.split(';');
 
-    // Extract and parse the values based on column index
     const title = columns[0]?.trim();
     const category = columns[1]?.trim();
     const description = columns[2]?.trim();

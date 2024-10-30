@@ -1,12 +1,16 @@
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 
+import { Platform } from 'react-native';
 export async function SchoolServiceCalc(lat: number, lon: number): Promise<number> {
   const RADIUS = 500; // Radius in meters for nearby search
   const filePath = "../src/assets/School_Location.csv"; 
   
   const fetchLines = async () => {
-    const lines = await getLinesFromCsv(filePath);
+    
+    var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/School_Location.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/School_Location.csv")); }
     return lines;
   };
 

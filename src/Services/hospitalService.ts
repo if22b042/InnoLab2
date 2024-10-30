@@ -1,5 +1,6 @@
 import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
 
+import { Platform } from 'react-native';
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 interface coordinates{
     longitude: number;
@@ -11,7 +12,9 @@ export async function HospitalServiceCalc(lat:number, lon:number) {
     const filePath="../src/assets/Hospital.csv"
   
     const fetchLines = async () => {
-        const lines = await getLinesFromCsv(filePath);
+    var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Hospital.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/Hospital.csv")); }
         return lines;
     };
 

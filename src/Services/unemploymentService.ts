@@ -1,27 +1,35 @@
 import { getLinesFromCsv } from '../ServiceFunctions/getLines';
 
+import { Platform } from 'react-native';
 export async function UnemploymentServiceCalc(districtCode: string): Promise<number> {
   const filePath = "../src/assets/Unemployment.csv"; // Path to the unemployment CSV file
   
   const fetchLines = async () => {
-    const lines = await getLinesFromCsv(filePath);
+    var lines;
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Unemployment.csv");}
+    else { lines = await getLinesFromCsv(require("../assets/Unemployment.csv")); }
     return lines;
   };
 
+  
+
   const lines = await fetchLines();
+  
   let totalUnemployment = 0;
   let count = 0;
 
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i];
     if (!line) continue;
-    const columns = line.split(';');
+    var columns;
+    if (Platform.OS === 'web') { columns = line.split(';');}
+    else { columns = line.split(',');}
 
-    // Extract values based on column index
     const currentDistrictCode = columns[1]?.trim();
     const unemploymentDensity = parseFloat(columns[7]?.replace(',', '.'));
 
-    // Check if the district code matches
+    
+
     if (currentDistrictCode === districtCode && !isNaN(unemploymentDensity)) {
       totalUnemployment += unemploymentDensity;
       count++;

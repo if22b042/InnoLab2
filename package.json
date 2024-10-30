@@ -2,7 +2,6 @@
   "name": "lifequalityapp",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
-
   "scripts": {
     "start": "expo start --tunnel",
     "android": "expo start --android",
@@ -18,7 +17,11 @@
     "@types/react": "~18.2.79",
     "axios": "^1.7.7",
     "expo": "~51.0.38",
+    "expo-document-picker": "~12.0.2",
+    "expo-file-system": "~17.0.1",
+    "expo-location": "~17.0.1",
     "expo-status-bar": "~1.12.1",
+    "papaparse": "^5.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
@@ -30,8 +33,7 @@
     "react-native-screens": "^3.31.1",
     "react-native-web": "~0.19.10",
     "react-native-webview": "^13.8.6",
-    "typescript": "~5.3.3",
-    "expo-file-system": "~17.0.1"
+    "typescript": "~5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

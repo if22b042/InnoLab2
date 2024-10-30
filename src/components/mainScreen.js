@@ -2,35 +2,53 @@ import React, { useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import {calculateLifeQualityScore } from '../Calculator/index'; // Import the service
-import {getCoordinatesFromAddress} from '../Calculator/getCoords';
-import {calculateAverageLifeQualityScores} from '../Simulation/simulationService';
+import { calculateLifeQualityScore } from '../Calculator/index'; // Import the service
+import { getCoordinatesFromAddress } from '../Calculator/getCoords';
+import { calculateAverageLifeQualityScores } from '../Simulation/simulationService';
+import { getUserCoordinates } from '../Calculator/getUserCoordinates'; // Import getUserCoordinates function
 
 const HomeScreen = () => {
   const [userCategory, setUserCategory] = useState("");
   const [location, setLocation] = useState("");
-  const [coordinates, setCoordinates] = useState(null);  // No explicit typing needed in JavaScript
+  const [coordinates, setCoordinates] = useState(null);
+  const [useDetectedLocation, setUseDetectedLocation] = useState(false); // New state to track if detected location is used
   const navigation = useNavigation(); 
 
-  const handleDetectLocation = () => {
-    // Logic for detecting location via GPS can go here
+  const handleDetectLocation = async () => {
+    try {
+      const detectedCoords = await getUserCoordinates(); // Get user's coordinates
+      if (detectedCoords) {
+        setCoordinates(detectedCoords); // Set coordinates if detected
+        setUseDetectedLocation(true); // Mark that we’re using detected coordinates
+        Alert.alert("Location Detected", "Using your current location within Vienna.");
+      } else {
+        Alert.alert("Location Error", "Could not detect a valid location within Vienna.");
+      }
+    } catch (error) {
+      Alert.alert("Error", "An error occurred while detecting location.");
+    }
   };
 
   const handleSubmit = async () => {
-    if (!location) {
-      Alert.alert("Please enter a location.");
+    if (!location && !useDetectedLocation) {
+      Alert.alert("Please enter a location or detect your current location.");
       return;
     }
 
     try {
-      const coords = await getCoordinatesFromAddress(location); // No typing needed in JavaScript
-      setCoordinates(coords);  // Store coordinates
+      let coords = coordinates;
       
-      var score=await calculateLifeQualityScore(coords, userCategory);
-      //Following 2 lines are for simulation
-      //var average_score= calculateAverageLifeQualityScores(100);
-      //console.log(average_score);
-      console.log("FinalScore: ", score)
+      // If not using detected location, get coordinates from address
+      if (!useDetectedLocation) {
+        coords = await getCoordinatesFromAddress(location);
+        setCoordinates(coords);
+      }
+      //const deviation= await calculateAverageLifeQualityScores(5);
+      //console.log(deviation);
+
+      const score = await calculateLifeQualityScore(coords, userCategory);
+      console.log("FinalScore: ", score);
+
       navigation.navigate('Results', {
         userCategory,
         location,
@@ -38,11 +56,9 @@ const HomeScreen = () => {
         score
       });
     } catch (error) {
-      Alert.alert("An error occurred while fetching the coordinates.");
+      Alert.alert("Error", "An error occurred while fetching the coordinates.");
     }
   };
-
- 
 
   return (
     <View style={styles.container}>
@@ -77,7 +93,10 @@ const HomeScreen = () => {
           style={styles.input}
           placeholder="Enter Address"
           value={location}
-          onChangeText={(text) => setLocation(text)}
+          onChangeText={(text) => {
+            setLocation(text);
+            setUseDetectedLocation(false); // Reset to manual address input
+          }}
         />
       </View>
 
