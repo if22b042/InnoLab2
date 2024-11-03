@@ -1,7 +1,7 @@
-import { calculateDistance } from '../ServiceFunctions/distanceCalculatorService';
+import { calculateDistance } from '../serviceFunctions/distanceCalculatorService';
 
 import { Platform } from 'react-native';
-import { getLinesFromCsv } from '../ServiceFunctions/getLines';
+import { getLinesFromCsv } from '../serviceFunctions/getLines';
 interface coordinates{
     longitude: number;
     latitude: number;

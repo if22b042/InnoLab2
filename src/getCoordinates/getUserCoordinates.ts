@@ -2,7 +2,7 @@ import * as Location from 'expo-location';
 import { Alert } from 'react-native';
 import axios from 'axios';
 
-import { getCoordinatesFromAddress } from './getCoords';
+import { getCoordinatesFromAddress } from './getAddressCoordinates';
 
 interface Coordinates {
     latitude: number;

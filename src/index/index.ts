@@ -11,10 +11,10 @@ import { WienerLinienServiceCalc } from '../Services/wienerLinienService';
 import { TopLocationsServiceCalc } from '../Services/topLocationService'; 
 
 
-import { calculateFinalScore } from './finalScore'; 
-import { createModifiers } from './createModifiers'; 
-import { normalizeScores } from './scoreNormalization'; 
-import { EvaluateStations } from '../ServiceFunctions/stationEvaluation'; 
+import { calculateFinalScore } from '../calculator/finalScore'; 
+import { createModifiers } from '../calculator/createModifiers'; 
+import { normalizeScores } from '../calculator/scoreNormalization'; 
+import { EvaluateStations } from '../serviceFunctions/stationEvaluation'; 
 // Define a type for the coordinates and district number
 export interface LocationData {
   lat: number;
@@ -41,11 +41,7 @@ export const calculateLifeQualityScore = async (coords, userCategory) =>
     var unemployment_score= await UnemploymentServiceCalc(district_code);
     var income_score= await IncomeServiceCalc(district_code);
 
-    var wiener_linien=await WienerLinienServiceCalc(latitude,longitude);
-    const { count, metroCount, nightBusCount, otherLineCount } = wiener_linien;
-
-    const wiener_linien_score = EvaluateStations(count, nightBusCount, metroCount);
-
+    var wiener_linien_score=await WienerLinienServiceCalc(latitude,longitude);
     
     var top_locations= TopLocationsServiceCalc(latitude,longitude);
     var top_location_score=(await top_locations).score;

@@ -1,24 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Picker } from '@react-native-picker/picker';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import { useNavigation } from '@react-navigation/native';
-import { calculateLifeQualityScore } from '../Calculator/index'; // Import the service
-import { getCoordinatesFromAddress } from '../Calculator/getCoords';
-import { getUserCoordinates } from '../Calculator/getUserCoordinates'; // Import getUserCoordinates function
+import { calculateLifeQualityScore } from '../index/index'; 
+import { getCoordinatesFromAddress } from '../getCoordinates/getAddressCoordinates';
+import { getUserCoordinates } from '../getCoordinates/getUserCoordinates';
 
 const HomeScreen = () => {
   const [userCategory, setUserCategory] = useState("");
   const [location, setLocation] = useState("");
   const [coordinates, setCoordinates] = useState(null);
-  const [useDetectedLocation, setUseDetectedLocation] = useState(false); // New state to track if detected location is used
-  const navigation = useNavigation(); 
+  const [useDetectedLocation, setUseDetectedLocation] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    // Listen to the network connection state
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleDetectLocation = async () => {
+    if (!isConnected) {
+      Alert.alert("No Internet Connection", "Please enter your coordinates and district manually.");
+      return;
+    }
+
     try {
-      const detectedCoords = await getUserCoordinates(); // Get user's coordinates
+      const detectedCoords = await getUserCoordinates();
       if (detectedCoords) {
-        setCoordinates(detectedCoords); // Set coordinates if detected
-        setUseDetectedLocation(true); // Mark that we’re using detected coordinates
+        setCoordinates(detectedCoords);
+        setUseDetectedLocation(true);
         Alert.alert("Location Detected", "Using your current location within Vienna.");
       } else {
         Alert.alert("Location Error", "Could not detect a valid location within Vienna.");
@@ -36,25 +52,22 @@ const HomeScreen = () => {
 
     try {
       let coords = coordinates;
-      
-      // If not using detected location, get coordinates from address
+
       if (!useDetectedLocation) {
         coords = await getCoordinatesFromAddress(location);
         setCoordinates(coords);
       }
 
-      // Calculate the life quality score and normalized scores
       const { score, normalizedScores } = await calculateLifeQualityScore(coords, userCategory);
       console.log("Final Score: ", score);
       console.log("Normalized Scores: ", normalizedScores);
 
-      // Navigate to Results screen with both final score and normalized scores
       navigation.navigate('Results', {
         userCategory,
         location,
         coordinates: coords,
         score,
-        normalizedScores, // Pass the normalized scores
+        normalizedScores,
       });
     } catch (error) {
       Alert.alert("Error", "An error occurred while fetching the coordinates.");
@@ -63,12 +76,10 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Vienna Life Quality</Text>
       </View>
 
-      {/* User Category Selection */}
       <View style={styles.categorySection}>
         <Text style={styles.label}>Select User Category:</Text>
         <Picker
@@ -83,32 +94,28 @@ const HomeScreen = () => {
         </Picker>
       </View>
 
-      {/* Location Section */}
       <View style={styles.locationSection}>
         <TouchableOpacity style={styles.button} onPress={handleDetectLocation}>
           <Text style={styles.buttonText}>Detect Current Location</Text>
         </TouchableOpacity>
         <Text style={styles.subText}>Or Enter Address Manually:</Text>
-        <Text>Muthgasse 35</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Address"
           value={location}
           onChangeText={(text) => {
             setLocation(text);
-            setUseDetectedLocation(false); // Reset to manual address input
+            setUseDetectedLocation(false);
           }}
         />
       </View>
 
-      {/* Submit Button */}
       <View style={styles.submitSection}>
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Check Life Quality</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Footer */}
       <View style={styles.footer}>
         <Text style={styles.footerText}>Future Links: Help | Contact</Text>
       </View>

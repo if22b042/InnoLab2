@@ -1,4 +1,4 @@
-import { getLinesFromCsv } from '../ServiceFunctions/getLines';
+import { getLinesFromCsv } from '../serviceFunctions/getLines';
 
 import { Platform } from 'react-native';
 export async function IncomeServiceCalc(districtCode: string): Promise<number> {

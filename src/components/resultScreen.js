@@ -8,14 +8,14 @@ const ResultsScreen = ({ route }) => {
   const scoreExplanation = `
   The Life Quality Score is calculated based on various factors that contribute to your living conditions. Here’s a breakdown of the components:
 
-  - **Healthcare Access**: Assessed through the availability and proximity of hospitals.
-  - **Safety**: Evaluated based on the presence of police stations in your vicinity.
-  - **Green Spaces**: Measures the accessibility of parks and recreational areas.
-  - **Educational Institutions**: Considers the proximity of schools and educational facilities.
-  - **Income Conditions**: Includes income rate in your district
-  - **Unemployment Conditions**: Evaluated based on the unemployment density in your district
-  - **Public Transport**: Evaluates the availability of public transport options, including buses and metro lines.
-  - **Top Locations**: Considers the accessibility of popular destinations and essential services.
+  - Healthcare Access: Assessed through the availability and proximity of hospitals in a range of 2000m from your location.
+  - Safety: Evaluated based on the presence of police stations in the vicinity of 1000m.
+  - Green Spaces: Measures the accessibility of parks and recreational areas within 1000m.
+  - Educational Institutions: Considers the proximity of schools and educational facilities within 500m.
+  - Income Conditions: Includes income rate in your district
+  - Unemployment Conditions: Evaluated based on the unemployment density in your district
+  - Public Transport: Evaluates the proximity of public transport stations such as buses and metro lines within 500m.
+  - Top Locations: Considers the vicinity of your location to prominent Tourist Places in Vienna. Uses a range of 1000m.
 
   Each component is normalized to ensure fairness, and your final score reflects a holistic view of your living environment.
   `;

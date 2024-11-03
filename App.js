@@ -18,6 +18,3 @@ const MainApp = () => {
     </NavigationContainer>
   );
 };
-
-registerRootComponent(MainApp);
-export default MainApp;
