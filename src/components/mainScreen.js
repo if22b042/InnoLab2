@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Picker } from '@react-native-picker/picker';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { calculateLifeQualityScore } from '../Calculator/index'; // Import the service
-import { getCoordinatesFromAddress } from '../Calculator/getCoords';
-import { calculateAverageLifeQualityScores } from '../Simulation/simulationService';
-import { getUserCoordinates } from '../Calculator/getUserCoordinates'; // Import getUserCoordinates function
+import { calculateLifeQualityScore } from '../index/index'; // Import the service
+import { getCoordinatesFromAddress } from '../getCoordinates/getAddressCoordinates';
+import { getUserCoordinates } from '../getCoordinates/getUserCoordinates'; // Import getUserCoordinates function
 
 const HomeScreen = () => {
   const [userCategory, setUserCategory] = useState("");
@@ -43,17 +42,19 @@ const HomeScreen = () => {
         coords = await getCoordinatesFromAddress(location);
         setCoordinates(coords);
       }
-      //const deviation= await calculateAverageLifeQualityScores(5);
-      //console.log(deviation);
 
-      const score = await calculateLifeQualityScore(coords, userCategory);
-      console.log("FinalScore: ", score);
+      // Calculate the life quality score and normalized scores
+      const { score, normalizedScores } = await calculateLifeQualityScore(coords, userCategory);
+      console.log("Final Score: ", score);
+      console.log("Normalized Scores: ", normalizedScores);
 
+      // Navigate to Results screen with both final score and normalized scores
       navigation.navigate('Results', {
         userCategory,
         location,
         coordinates: coords,
-        score
+        score,
+        normalizedScores, // Pass the normalized scores
       });
     } catch (error) {
       Alert.alert("Error", "An error occurred while fetching the coordinates.");

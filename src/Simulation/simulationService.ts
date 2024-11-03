@@ -8,7 +8,7 @@ import { UnemploymentServiceCalc } from '../Services/unemploymentService';
 import { IncomeServiceCalc } from '../Services/incomeService'; 
 import { WienerLinienServiceCalc } from '../Services/wienerLinienService'; 
 import { TopLocationsServiceCalc } from '../Services/topLocationService'; 
-import { EvaluateStations } from '../Calculator/stationEvaluation'; 
+import { EvaluateStations } from '../serviceFunctions/stationEvaluation'; 
 
 // Define a type for the coordinates and district number
 export interface LocationData {
@@ -98,12 +98,8 @@ export const calculateLifeQualityScore = async (coords: LocationData) => {
   const hospital_score = await HospitalServiceCalc(latitude, longitude);
   const polices_score = await PoliceServiceCalc(latitude, longitude);
   const greenspace_score = await GreenSpaceServiceCalc(latitude, longitude);
-  const school_score = await SchoolServiceCalc(latitude, longitude);
-
-  var wiener_linien=await WienerLinienServiceCalc(latitude,longitude);
-  const { count, metroCount, nightBusCount, otherLineCount } = wiener_linien;
-
-  const wiener_linien_score = EvaluateStations(count, nightBusCount, metroCount);
+  const school_score = await SchoolServiceCalc(latitude, longitude);  
+  const wiener_linien_score = await WienerLinienServiceCalc(latitude,longitude);
 
 
 
