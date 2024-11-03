@@ -1,21 +1,25 @@
-# Step 1: Use Node.js as the base image
-FROM node:18-slim
+# Use a Node.js image as the base
+FROM node:16
 
-# Step 2: Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Step 3: Copy the package.json and package-lock.json to install dependencies
+# Copy only package.json and package-lock.json to leverage Docker cache for dependencies
 COPY package*.json ./
 
-# Step 4: Install global Expo CLI and project dependencies
-RUN npm install -g @expo/cli
-RUN npm install
+# Install dependencies
+RUN npm install -g expo-cli && npm install
 
-# Step 5: Copy the rest of the project files to the container
+# Copy the rest of the application code
 COPY . .
 
-# Step 6: Expose the necessary port for Expo
-EXPOSE 19006
+# Expose the default Expo port
+EXPOSE 19000
+EXPOSE 19001
+EXPOSE 19002
 
-# Step 7: Start Expo in web mode
-CMD ["npx", "expo", "start", "--web"]
+# Set environment variables for Expo
+ENV EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+
+# Start Expo when the container is run
+CMD ["npx", "expo", "start", "--tunnel"]
