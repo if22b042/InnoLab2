@@ -89,7 +89,6 @@ const HomeScreen = () => {
           <Text style={styles.buttonText}>Detect Current Location</Text>
         </TouchableOpacity>
         <Text style={styles.subText}>Or Enter Address Manually:</Text>
-        <Text>Muthgasse 35</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Address"

@@ -58,7 +58,7 @@ export const calculateLifeQualityScore = async (coords, userCategory) =>
 
     var modifiers=createModifiers(userCategory);
 
-    const score= calculateFinalScore(normal_scores,modifiers);
+    const score= (Math.round((calculateFinalScore(normal_scores,modifiers))*100))/100;
 
     return {
       score: score,
