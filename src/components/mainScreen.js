@@ -78,7 +78,7 @@ const HomeScreen = () => {
         >
           <Picker.Item label="Select..." value="" />
           <Picker.Item label="Student" value="student" />
-          <Picker.Item label="Parent with Small Children" value="parent" />
+          <Picker.Item label="Parent with Small Children" value="family" />
           <Picker.Item label="Retiree" value="retiree" />
         </Picker>
       </View>
