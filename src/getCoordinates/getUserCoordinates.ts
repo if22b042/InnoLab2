@@ -59,7 +59,6 @@ export async function getUserCoordinates(address?: string): Promise<LocationData
         } else {
             // Alert with coordinates even if outside Vienna
             Alert.alert(
-                'Location Detected (Outside Vienna)',
                 `Coordinates: (${userCoords.latitude}, ${userCoords.longitude})`
             );
 
@@ -69,7 +68,7 @@ export async function getUserCoordinates(address?: string): Promise<LocationData
                 console.log('Using coordinates from address input:', addressCoords);
                 return addressCoords;
             } else {
-                Alert.alert('Location not in Vienna and no address provided.');
+                //Alert.alert('Location not in Vienna and no address provided.');
                 return null;
             }
         }
