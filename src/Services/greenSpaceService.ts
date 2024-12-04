@@ -13,7 +13,7 @@ export async function GreenSpaceServiceCalc(lat: number, lon: number): Promise<n
   
   const fetchLines = async () => {
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/GreenSpace.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/GreenSpace.csv");}
     else { lines = await getLinesFromCsv(require("../assets/GreenSpace.csv")); }
     return lines;
   };

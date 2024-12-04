@@ -15,7 +15,7 @@ export async function WienerLinienServiceCalc(lat: number, lon: number) {
     const fetchLines = async () => {
         var lines;
         if (Platform.OS === 'web') { 
-            lines = await getLinesFromCsv("../src/assets/Wiener_Linien.csv");
+            lines = await getLinesFromCsv("/Wiener_Linien.csv");
         } else { 
             lines = await getLinesFromCsv(require("../assets/Wiener_Linien.csv")); 
         }
@@ -30,7 +30,6 @@ export async function WienerLinienServiceCalc(lat: number, lon: number) {
     let otherLineCount = 0;
     let count = 0;
 
-    // Use Sets to track unique lines
     const countedNightBusLines = new Set();
     const countedMetroLines = new Set();
     const countedOtherLines = new Set();
@@ -46,7 +45,6 @@ export async function WienerLinienServiceCalc(lat: number, lon: number) {
         if (!stationCoordinatesMatch) {
             continue; // Skip if coordinates are not found
         }
-        
         const [longitude, latitude] = stationCoordinatesMatch[1].split(' ').map(Number); 
         const stationLines = columns[6] ? columns[6].split(',').map(line => line.trim()) : [];
         
@@ -71,6 +69,6 @@ export async function WienerLinienServiceCalc(lat: number, lon: number) {
     otherLineCount = countedOtherLines.size;
     
     const wiener_linien_score = EvaluateStations(count, nightBusCount, metroCount);
-
+    
     return wiener_linien_score;
 }

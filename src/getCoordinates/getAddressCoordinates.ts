@@ -15,8 +15,7 @@ export interface LocationData {
   districtNumber: string;
 }
 
-// Google Maps Geocoding Service
-const GOOGLE_MAPS_API_KEY = "AIzaSyD8ukND-h9jUVV7nM-z_R9cYvMeY8hKiiM"; // Replace with your real API key
+const GOOGLE_MAPS_API_KEY = "AIzaSyD8ukND-h9jUVV7nM-z_R9cYvMeY8hKiiM"; 
 
 /**
  * @param address - The address to geocode

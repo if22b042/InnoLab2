@@ -13,7 +13,7 @@ export async function HospitalServiceCalc(lat:number, lon:number) {
   
     const fetchLines = async () => {
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Hospital.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/Hospital.csv");}
     else { lines = await getLinesFromCsv(require("../assets/Hospital.csv")); }
         return lines;
     };

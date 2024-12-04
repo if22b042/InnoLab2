@@ -12,14 +12,13 @@ export async function PoliceServiceCalc(lat:number, lon:number) {
   
     const fetchLines = async () => {
         var lines;
-        if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Police_Locations.csv");}
+        if (Platform.OS === 'web') { lines = await getLinesFromCsv("/Police_Locations.csv");}
         else { lines = await getLinesFromCsv(require("../assets/Police_Locations.csv")); }
        
         return lines;
     };
 
     const lines = await fetchLines();
-
     var score=0;
     
         for (let i = 1; i < lines.length; i++) {

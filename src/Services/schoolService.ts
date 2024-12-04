@@ -9,7 +9,7 @@ export async function SchoolServiceCalc(lat: number, lon: number): Promise<numbe
   const fetchLines = async () => {
     
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/School_Location.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/School_Location.csv");}
     else { lines = await getLinesFromCsv(require("../assets/School_Location.csv")); }
     return lines;
   };

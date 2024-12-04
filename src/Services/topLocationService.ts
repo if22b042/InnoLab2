@@ -11,12 +11,12 @@ interface TopLocationRecord {
 }
 
 export async function TopLocationsServiceCalc(lat: number, lon: number): Promise<{ message: string; score: number }> {
-  const filePath = "../src/assets/top-locations-wien.csv"; // Path to the top locations CSV file
+  const filePath = "../src/assets/top-locations-wien.csv"; 
   const RADIUS = 1000; // Radius in meters for nearby search
   
   const fetchLines = async () => {
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/top-locations-wien.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/top-locations-wien.csv");}
     else { lines = await getLinesFromCsv(require("../assets/top-locations-wien.csv")); }
     return lines;
   };

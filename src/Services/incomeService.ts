@@ -2,11 +2,11 @@ import { getLinesFromCsv } from '../serviceFunctions/getLines';
 
 import { Platform } from 'react-native';
 export async function IncomeServiceCalc(districtCode: string): Promise<number> {
-  const filePath = "../src/assets/Income.csv"; // Path to the income CSV file
+  const filePath = "../src/assets/Income.csv"; 
   
   const fetchLines = async () => {
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Income.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/Income.csv");}
     else { lines = await getLinesFromCsv(require("../assets/Income.csv")); }
 
     return lines;
@@ -34,9 +34,7 @@ export async function IncomeServiceCalc(districtCode: string): Promise<number> {
     }
   }
 
-  // Calculate average income if there are records for the district
   const averageIncome = count > 0 ? totalIncome / count : 0;
 
-  //console.log("Average Income for District", districtCode, ":", averageIncome);
   return averageIncome;
 }

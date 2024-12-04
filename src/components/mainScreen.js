@@ -18,7 +18,7 @@ const HomeScreen = () => {
       const detectedCoords = await getUserCoordinates(); // Get user's coordinates
       if (detectedCoords) {
         setCoordinates(detectedCoords); // Set coordinates if detected
-        setUseDetectedLocation(true); // Mark that we’re using detected coordinates
+        setUseDetectedLocation(true); 
         Alert.alert("Location Detected", "Using your current location within Vienna.");
       } else {
         Alert.alert("Location Error", "Could not detect a valid location within Vienna.");
@@ -44,17 +44,17 @@ const HomeScreen = () => {
       }
 
       // Calculate the life quality score and normalized scores
-      const { score, normalizedScores } = await calculateLifeQualityScore(coords, userCategory);
+      const { score, normalizedScores, results } = await calculateLifeQualityScore(coords, userCategory);
       console.log("Final Score: ", score);
       console.log("Normalized Scores: ", normalizedScores);
 
-      // Navigate to Results screen with both final score and normalized scores
       navigation.navigate('Results', {
         userCategory,
         location,
         coordinates: coords,
         score,
-        normalizedScores, // Pass the normalized scores
+        normalizedScores, 
+        results
       });
     } catch (error) {
       Alert.alert("Error", "An error occurred while fetching the coordinates.");
@@ -89,6 +89,7 @@ const HomeScreen = () => {
           <Text style={styles.buttonText}>Detect Current Location</Text>
         </TouchableOpacity>
         <Text style={styles.subText}>Or Enter Address Manually:</Text>
+        <Text style={styles.subText}>Muthgasse 21</Text>
         <TextInput
           style={styles.input}
           placeholder="Enter Address"

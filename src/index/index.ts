@@ -63,6 +63,7 @@ export const calculateLifeQualityScore = async (coords, userCategory) =>
     return {
       score: score,
       normalizedScores: normal_scores,
+      results: scores
     };
 
 }

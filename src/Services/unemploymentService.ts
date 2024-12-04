@@ -2,11 +2,11 @@ import { getLinesFromCsv } from '../serviceFunctions/getLines';
 
 import { Platform } from 'react-native';
 export async function UnemploymentServiceCalc(districtCode: string): Promise<number> {
-  const filePath = "../src/assets/Unemployment.csv"; // Path to the unemployment CSV file
+  const filePath = "../src/assets/Unemployment.csv"; 
   
   const fetchLines = async () => {
     var lines;
-    if (Platform.OS === 'web') { lines = await getLinesFromCsv("../src/assets/Unemployment.csv");}
+    if (Platform.OS === 'web') { lines = await getLinesFromCsv("/Unemployment.csv");}
     else { lines = await getLinesFromCsv(require("../assets/Unemployment.csv")); }
     return lines;
   };

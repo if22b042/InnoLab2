@@ -15,8 +15,7 @@ interface LocationData {
     districtNumber: string;
 }
 
-// Google Maps Geocoding Service API Key (replace with your real key)
-const GOOGLE_MAPS_API_KEY = "AIzaSyD8ukND-h9jUVV7nM-z_R9cYvMeY8hKiiM";
+const GOOGLE_MAPS_API_KEY = "AIzaSyD8ukND-h9jUVV7nM-z_R9cYvMeY8hKiiM";//needs to be encrypted
 
 /**
  * Retrieves the user's coordinates and district number (if within Vienna).
@@ -31,8 +30,6 @@ export async function getUserCoordinates(address?: string): Promise<LocationData
             Alert.alert('Permission to access location was denied');
             return null;
         }
-
-        // Try to get the user's current location
         const location = await Location.getCurrentPositionAsync({});
         const userCoords: Coordinates = {
             latitude: location.coords.latitude,
@@ -78,9 +75,8 @@ export async function getUserCoordinates(address?: string): Promise<LocationData
     }
 }
 
-// Helper function to check if a location is within Vienna's coordinates
 function isInVienna({ latitude, longitude }: Coordinates): boolean {
-    // Approximate bounding box for Vienna, Austria
+    // Approximate bounding box for Vienna
     const viennaBounds = {
         north: 48.323,   // Northern latitude
         south: 48.108,   // Southern latitude
@@ -96,7 +92,6 @@ function isInVienna({ latitude, longitude }: Coordinates): boolean {
     );
 }
 
-// Reverse geocode coordinates to get the district number based on postal code
 async function getDistrictNumberFromCoordinates(latitude: number, longitude: number): Promise<string> {
     try {
         const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
